@@ -124,25 +124,20 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
           }
           else {
             this.domElement.innerHTML = `
-            <div>
-              <i id='btnTest' class="fas fa-arrow-circle-right"></i>
-              <i id='btn2' class="fas fa-arrow-circle-right" onClick=" ${this.swap()}"></i>
-              <div id='a'> hover here </div>
-              <div id='b'> Change color</div>
-            </div>
+              <div><h5>Permission required to view this webpart!</h5></div>
             `;
             
           }
           
 
-          $(document).on('mouseover', '#a', function (e) {
-            $("#b").css("background-color", "yellow");         
-          });
+          // $(document).on('mouseover', '#a', function (e) {
+          //   $("#b").css("background-color", "yellow");         
+          // });
 
-          $(document).on('mouseout', '#a', function (e) {
-            $("#b").css("background-color", "red");
+          // $(document).on('mouseout', '#a', function (e) {
+          //   $("#b").css("background-color", "red");
 
-           });
+          //  });
 
           
         });
@@ -154,10 +149,6 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 
     }
     
-    public swap(): any {
-      console.log("Triggered!");
-      // document.getElementById("flip").className == "expanded" ? document.getElementById("flip").className = "collapsed": document.getElementById("flip").className = "expanded";
-    }
  
 
   protected get dataVersion(): Version {
