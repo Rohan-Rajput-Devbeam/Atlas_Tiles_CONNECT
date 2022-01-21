@@ -1,0 +1,128 @@
+@import "~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss";
+@import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
+
+.g_b_50a7110f {
+  width: 100%!important;
+  margin-left: 15px !important;
+}
+
+.tileImage {
+  font-family: 'Oswald' !important;
+
+  .MainContainer {
+    font-family: 'Oswald' !important;
+    width: 100%;
+    min-height: 297px;
+    //background-image: url(https://bgsw1.sharepoint.com/sites/Testing_Publishing/SiteAssets/Brand_Spotlight/UStudio.png);
+    /* width: 800px; */
+    /* max-width: 90%; */
+    overflow: hidden;
+    
+    background-position: right center;
+    // background-attachment: local;
+    
+ 
+    img {
+      display: block;
+      height: auto;
+      //max-width: 100%;
+      width: 100%;
+      // max-height: none;
+      //background-image: url(https://bgsw1.sharepoint.com/sites/Testing_Publishing/SiteAssets/Brand_Spotlight/UStudio.png);
+    }
+
+    .callToAction {
+      display: block;
+      float: left;
+      background: rgba(255, 255, 255, 0.7);
+      margin-top: 2.25em;
+      //vertical-align: middle;
+      text-align: right;
+      font-size: 3em;
+      padding: 0.25em 0.5em 0.25em calc(10% + 2em);
+      color: #424242;
+      text-transform: uppercase;
+      font-family: "Oswald" !important;
+      font-size: 14px;
+    }
+    
+    .callToAction:hover {
+      text-decoration: none;
+      color: #cc0a0a;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    i {
+      margin-left: 0.35em;
+      font-size: 1.1em;
+      color: #cc0a0a;
+    }
+
+    .blue {
+      color: blue;
+    }
+    
+    .arrow {
+      border: solid black;
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 3px;
+      transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+    }
+    
+    .containermain {
+      max-width: 700px;
+      margin: 0px auto;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    }
+    
+    
+    .description {
+      @include ms-font-l;
+      @include ms-fontColor-white;
+    }
+    
+    .ImageURL {
+      @include ms-font-l;
+      @include ms-fontColor-white;
+    }
+    
+    .button {
+      // Our button
+      text-decoration: none;
+      height: 32px;
+      
+      // Primary Button
+      min-width: 80px;
+      background-color: $ms-color-themePrimary;
+      border-color: $ms-color-themePrimary;
+      color: $ms-color-white;
+      
+      // Basic Button
+      outline: transparent;
+      position: relative;
+      font-family: "Segoe UI WestEuropean", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue",
+      sans-serif;
+      -webkit-font-smoothing: antialiased;
+      font-size: $ms-font-size-m;
+      font-weight: $ms-font-weight-regular;
+      border-width: 0;
+      text-align: center;
+      cursor: pointer;
+      display: inline-block;
+      padding: 0 16px;
+      
+      .label {
+        font-weight: $ms-font-weight-semibold;
+        font-size: $ms-font-size-m;
+        height: 32px;
+        line-height: 32px;
+        margin: 0 4px;
+        vertical-align: top;
+        display: inline-block;
+      }
+    }
+    
+  }
+}

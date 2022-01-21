@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "24dcb4d6-9ab1-4ecc-982b-c88c2fb6ae86",
+  "alias": "AtlasTilesConnectWebPart",
+  "componentType": "WebPart",
+
+  // The "*" signifies that the version should be taken from the package.json
+  "version": "*",
+  "manifestVersion": 2,
+
+  // If true, the component can only be installed on sites where Custom Script is allowed.
+  // Components that allow authors to embed arbitrary script code should set this to true.
+  // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
+  "requiresCustomScript": false,
+  "supportsFullBleed": true,
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
+    "group": { "default": "Other" },
+    "title": { "default": "Atlas_Tiles_CONNECT" },
+    "description": { "default": "Atlas_Tiles_CONNECT description" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "Atlas_Tiles_CONNECT",
+      "Hyperlink":"TESTIMGLINK",
+      "ImageURL": "TESTHYPLINK"
+    }
+  }]
+}
