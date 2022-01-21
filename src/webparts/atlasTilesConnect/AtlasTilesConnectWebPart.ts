@@ -141,23 +141,10 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 
           $(document).on('mouseout', '#a', function (e) {
             $("#b").css("background-color", "red");
-          //  $("#b").addClass(`${styles.blue}`);        
 
            });
 
-          //  $(document).on('click', '#btnTest', function (e) {
-          //   $("#b").addClass(`${styles.blue}`);        
-          // });
-
-          // $(document).ready(function(){
-          //   $("button").click(function(){
-          //     $("h1, h2, p").addClass("blue");
-          //     $("div").addClass("important");
-          //   });
-          // });
-         
-
-//ddsfd
+          
         });
 
       });
