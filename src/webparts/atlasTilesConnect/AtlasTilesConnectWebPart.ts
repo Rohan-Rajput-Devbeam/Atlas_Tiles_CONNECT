@@ -1,5 +1,5 @@
 
-import {} from 'jquery';
+import { } from 'jquery';
 
 import PnPTelemetry from "@pnp/telemetry-js";
 const telemetry = PnPTelemetry.getInstance();
@@ -50,10 +50,10 @@ export interface IAtlasTilesConnectWebPartProps {
 export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtlasTilesConnectWebPartProps> {
 
   public render(): void {
-    if (!this.renderedOnce){
+    if (!this.renderedOnce) {
       console.log("SCRIPT LOADED...");
-    SPComponentLoader.loadCss('https://use.fontawesome.com/releases/v5.0.9/css/all.css'); 
-    SPComponentLoader.loadScript('https://code.jquery.com/jquery-1.7.1.min.js');
+      SPComponentLoader.loadCss('https://use.fontawesome.com/releases/v5.0.9/css/all.css');
+      SPComponentLoader.loadScript('https://code.jquery.com/jquery-1.7.1.min.js');
     }
 
     this.context.spHttpClient.get(`${this.context.pageContext.web.absoluteUrl}/_api/Web/CurrentUser/Groups`,
@@ -72,9 +72,14 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
             const GroupArray = this.properties.people.map((obj: { fullName: any; }) => {
               return obj.fullName;
             });
+            var usrFullname = this.context.pageContext.user.displayName;
+            var Groupintersections = finalArray.filter(e => GroupArray.indexOf(e) !== -1);
+            // console.log(Groupintersections)
+
             ///console.log(GroupArray);//Array Of Group in property pane
-            console.log("Current User Present In The Group");
-            this.domElement.innerHTML = `
+            if (GroupArray.includes(usrFullname) || Groupintersections.length > 0) {
+              // console.log("Current User Present In The Group");
+              this.domElement.innerHTML = `
              <head>
              <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
              <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,6 +90,7 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 					   <div class="ms-rte-embedcode ms-rte-embedwp">
 					   <div class="${styles.MainContainer}"
 					   style="background-image: url(${escape(this.properties.ImageURL)});
+             box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 					   background-repeat: no-repeat;width:120%;height:287px;
 					   background-size:cover;
 					   background-position: center;">
@@ -120,15 +126,16 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 					   
 					 </div></div>
 					 `;
+            }
+            else {
+              this.domElement.innerHTML = `
+                <div><h5>Permission required to view this webpart!</h5></div>
+              `;
+  
+            }
+          }
+        
 
-          }
-          else {
-            this.domElement.innerHTML = `
-              <div><h5>Permission required to view this webpart!</h5></div>
-            `;
-            
-          }
-          
 
           // $(document).on('mouseover', '#a', function (e) {
           //   $("#b").css("background-color", "yellow");         
@@ -139,7 +146,7 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 
           //  });
 
-          
+
         });
 
       });
@@ -147,9 +154,9 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 
 
 
-    }
-    
- 
+  }
+
+
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
