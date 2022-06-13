@@ -15,7 +15,8 @@
     "@microsoft/sp-property-pane": "1.13.1",
     "@microsoft/sp-webpart-base": "1.13.1",
     "@pnp/spfx-property-controls": "3.3.0",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "@pnp/sp": "^2.11.0"
   },
   "devDependencies": {
     "@microsoft/rush-stack-compiler-3.9": "0.4.47",
