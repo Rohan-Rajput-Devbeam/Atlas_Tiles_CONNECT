@@ -40,6 +40,10 @@ import "@pnp/sp/lists";
 import { SPComponentLoader } from '@microsoft/sp-loader';
 import { sp } from '@pnp/sp';
 
+import "isomorphic-fetch"; // or import the fetch polyfill you installed
+import { Client } from "@microsoft/microsoft-graph-client";
+import { MSGraphClient } from '@microsoft/sp-http';
+import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 
 export interface IAtlasTilesConnectWebPartProps {
   LangEnglish: any;
@@ -69,17 +73,23 @@ export interface IAtlasTilesConnectWebPartProps {
   TargetAudience: string;
   people: IPropertyFieldGroupOrPerson[];
   context: WebPartContext;
+  currUserLang: string;
 }
 
 export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtlasTilesConnectWebPartProps> {
 
+
   public async render(): Promise<void> {
+
+
     var siteUrl = this.context.pageContext.web.absoluteUrl ///Get Site Url
     // console.log(siteUrl)
 
     const myArray = siteUrl.split("/");
     var siteName = myArray[myArray.length - 1].split(".")[0]; ///Get Site Name
     // console.log(siteName)
+    var testuser = this.context.pageContext.user;
+    console.log(testuser)
 
     var userEmail = this.context.pageContext.user.email;
     this.context.spHttpClient.get(`${siteUrl}/_api/web/lists/getbytitle('Preference')/Items?&$filter=Title eq '${userEmail}'`,
@@ -94,43 +104,58 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 
 
 
-
-
-
-
-
-
-
           if (!this.renderedOnce) {
             console.log("SCRIPT LOADED...");
             SPComponentLoader.loadCss('https://use.fontawesome.com/releases/v5.0.9/css/all.css');
             SPComponentLoader.loadScript('https://code.jquery.com/jquery-1.7.1.min.js');
           }
 
-          this.context.spHttpClient.get(`${siteUrl}/_api/Web/CurrentUser/Groups`,
-            SPHttpClient.configurations.v1)
-            .then((response: SPHttpClientResponse) => {
-              response.json().then((responseJSON: any) => {
-                // console.log(responseJSON.value);
-                var finalArray = responseJSON.value.map(function (obj: { Title: any; }) {
-                  return obj.Title;
-                });
-                ///console.log(finalArray);//Array Retrieved from Current users Groups.....
+          // this.context.spHttpClient.get(`${siteUrl}/_api/Web/CurrentUser/Groups`,
+          //   SPHttpClient.configurations.v1)
+          //   .then((response: SPHttpClientResponse) => {
+          //     response.json().then((responseJSON: any) => {
+          //       console.log(responseJSON.value);
+          //       var finalArray = responseJSON.value.map(function (obj: { Title: any; }) {
+          //         return obj.Title;
+          //       });
+          //       console.log(finalArray);
 
-                if (this.properties.people && this.properties.people.length > 0) {
-                  ///console.log(JSON.stringify(this.properties.people));
+          this.context.msGraphClientFactory.getClient().then(async (client: MSGraphClient): Promise<void> => {
+            let group = await client.api('/me/memberOf/$/microsoft.graph.group')
+              .filter('groupTypes/any(a:a eq \'unified\')')
+              .get();
+            console.log(group.value)
+            var finalArray = group.value.map(function (obj: { displayName: any; }) {
+              return obj.displayName;
+            });
+            console.log(finalArray)
+            // finalArray =group1
 
-                  const GroupArray = this.properties.people.map((obj: { fullName: any; }) => {
-                    return obj.fullName;
-                  });
-                  var usrFullname = this.context.pageContext.user.displayName;
-                  var Groupintersections = finalArray.filter(e => GroupArray.indexOf(e) !== -1);
-                  // console.log(Groupintersections)
 
-                  ///console.log(GroupArray);//Array Of Group in property pane
-                  if (GroupArray.includes(usrFullname) || Groupintersections.length > 0) {
-                    // console.log("Current User Present In The Group");
-                    this.domElement.innerHTML = `
+
+
+
+
+            //Array Retrieved from Current users Groups.....
+            if (this.properties.people && this.properties.people.length > 0) {
+              ///console.log(JSON.stringify(this.properties.people));
+              console.log(this.properties.people)
+              // const GroupArray = this.properties.people.map((obj: { fullName: any; }) => {
+              //   return obj.fullName;
+              // });
+            var tempPeopleArray = this.properties.people
+            const GroupArray = tempPeopleArray.map(element => element.description);
+            console.log(GroupArray)
+
+
+          var usrFullname = this.context.pageContext.user.displayName;
+              var Groupintersections = finalArray.filter(e => GroupArray.indexOf(e) !== -1);
+              console.log(Groupintersections)
+
+              ///console.log(GroupArray);//Array Of Group in property pane
+              if (GroupArray.includes(usrFullname) || Groupintersections.length > 0) {
+                // console.log("Current User Present In The Group");
+                this.domElement.innerHTML = `
              <head>
              <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
              <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -162,26 +187,26 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 					   color: #424242;
 					   text-transform: uppercase;" href="${escape(this.properties.Hyperlink)}" target="_blank" unselectable="on" >
             ${prefLanguage[0].includes("English") && this.properties.LangEnglish == true ?
-                        this.properties.EnglishText :
-                        prefLanguage[0].includes("Chinese") && this.properties.LangChinese == true ?
-                          this.properties.ChineseText :
-                          prefLanguage[0].includes("German") && this.properties.LangGerman == true ?
-                            this.properties.GermanText :
-                            prefLanguage[0].includes("Spanish") && this.properties.LangSpanish == true ?
-                              this.properties.SpanishText :
-                              prefLanguage[0].includes("French") && this.properties.LangFrench == true ?
-                                this.properties.FrenchText :
-                                prefLanguage[0].includes("Polish") && this.properties.LangPolish == true ?
-                                  this.properties.PolishText :
-                                  prefLanguage[0].includes("Japanese") && this.properties.LangJapanese == true ?
-                                    this.properties.JapaneseText :
-                                    prefLanguage[0].includes("Portuguese") && this.properties.LangPortuguese == true ?
-                                      this.properties.PortugueseText :
-                                      prefLanguage[0].includes("Russian") && this.properties.LangRussian == true ?
-                                        this.properties.RussianText :
-                                        `${escape(this.properties.description)}`
+                    this.properties.EnglishText :
+                    prefLanguage[0].includes("Chinese") && this.properties.LangChinese == true ?
+                      this.properties.ChineseText :
+                      prefLanguage[0].includes("German") && this.properties.LangGerman == true ?
+                        this.properties.GermanText :
+                        prefLanguage[0].includes("Spanish") && this.properties.LangSpanish == true ?
+                          this.properties.SpanishText :
+                          prefLanguage[0].includes("French") && this.properties.LangFrench == true ?
+                            this.properties.FrenchText :
+                            prefLanguage[0].includes("Polish") && this.properties.LangPolish == true ?
+                              this.properties.PolishText :
+                              prefLanguage[0].includes("Japanese") && this.properties.LangJapanese == true ?
+                                this.properties.JapaneseText :
+                                prefLanguage[0].includes("Portuguese") && this.properties.LangPortuguese == true ?
+                                  this.properties.PortugueseText :
+                                  prefLanguage[0].includes("Russian") && this.properties.LangRussian == true ?
+                                    this.properties.RussianText :
+                                    `${escape(this.properties.description)}`
 
-                      }
+                  }
 					   
 		   
 		   
@@ -198,16 +223,16 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 					   
 					 </div></div>
 					 `;
-                  }
-                  else {
-                    this.domElement.innerHTML = `
+              }
+              else {
+                this.domElement.innerHTML = `
                 
               `;
 
-                  }
-                }
-                else{
-                  this.domElement.innerHTML = `
+              }
+            }
+            else {
+              this.domElement.innerHTML = `
                   <head>
                   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -239,26 +264,26 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
                   color: #424242;
                   text-transform: uppercase;" href="${escape(this.properties.Hyperlink)}" target="_blank" unselectable="on" >
                  ${prefLanguage[0].includes("English") && this.properties.LangEnglish == true ?
-                             this.properties.EnglishText :
-                             prefLanguage[0].includes("Chinese") && this.properties.LangChinese == true ?
-                               this.properties.ChineseText :
-                               prefLanguage[0].includes("German") && this.properties.LangGerman == true ?
-                                 this.properties.GermanText :
-                                 prefLanguage[0].includes("Spanish") && this.properties.LangSpanish == true ?
-                                   this.properties.SpanishText :
-                                   prefLanguage[0].includes("French") && this.properties.LangFrench == true ?
-                                     this.properties.FrenchText :
-                                     prefLanguage[0].includes("Polish") && this.properties.LangPolish == true ?
-                                       this.properties.PolishText :
-                                       prefLanguage[0].includes("Japanese") && this.properties.LangJapanese == true ?
-                                         this.properties.JapaneseText :
-                                         prefLanguage[0].includes("Portuguese") && this.properties.LangPortuguese == true ?
-                                           this.properties.PortugueseText :
-                                           prefLanguage[0].includes("Russian") && this.properties.LangRussian == true ?
-                                             this.properties.RussianText :
-                                             `${escape(this.properties.description)}`
-     
-                           }
+                  this.properties.EnglishText :
+                  prefLanguage[0].includes("Chinese") && this.properties.LangChinese == true ?
+                    this.properties.ChineseText :
+                    prefLanguage[0].includes("German") && this.properties.LangGerman == true ?
+                      this.properties.GermanText :
+                      prefLanguage[0].includes("Spanish") && this.properties.LangSpanish == true ?
+                        this.properties.SpanishText :
+                        prefLanguage[0].includes("French") && this.properties.LangFrench == true ?
+                          this.properties.FrenchText :
+                          prefLanguage[0].includes("Polish") && this.properties.LangPolish == true ?
+                            this.properties.PolishText :
+                            prefLanguage[0].includes("Japanese") && this.properties.LangJapanese == true ?
+                              this.properties.JapaneseText :
+                              prefLanguage[0].includes("Portuguese") && this.properties.LangPortuguese == true ?
+                                this.properties.PortugueseText :
+                                prefLanguage[0].includes("Russian") && this.properties.LangRussian == true ?
+                                  this.properties.RussianText :
+                                  `${escape(this.properties.description)}`
+
+                }
                   
             
             
@@ -276,23 +301,14 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
                 </div></div>
                 `;
 
-                }
+            }
+
+          });
 
 
+          //   });
 
-                // $(document).on('mouseover', '#a', function (e) {
-                //   $("#b").css("background-color", "yellow");         
-                // });
-
-                // $(document).on('mouseout', '#a', function (e) {
-                //   $("#b").css("background-color", "red");
-
-                //  });
-
-
-              });
-
-            });
+          // });
 
         })
       });

@@ -9,16 +9,19 @@
     "test": "gulp test"
   },
   "dependencies": {
+    "@microsoft/microsoft-graph-client": "^3.0.2",
     "@microsoft/sp-core-library": "1.13.1",
     "@microsoft/sp-lodash-subset": "1.13.1",
     "@microsoft/sp-office-ui-fabric-core": "1.13.1",
     "@microsoft/sp-property-pane": "1.13.1",
     "@microsoft/sp-webpart-base": "1.13.1",
+    "@pnp/sp": "^2.11.0",
     "@pnp/spfx-property-controls": "3.3.0",
-    "jquery": "^3.6.0",
-    "@pnp/sp": "^2.11.0"
+    "isomorphic-fetch": "^3.0.0",
+    "jquery": "^3.6.0"
   },
   "devDependencies": {
+    "@microsoft/microsoft-graph-types": "^2.22.0",
     "@microsoft/rush-stack-compiler-3.9": "0.4.47",
     "@microsoft/sp-build-web": "1.13.1",
     "@microsoft/sp-module-interfaces": "1.13.1",
