@@ -167,7 +167,7 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
 					   <div class="${styles.MainContainer}"
 					   style="background-image: url(${escape(this.properties.ImageURL)});
              box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-					   background-repeat: no-repeat;width:100%;height:267px;
+					   background-repeat: no-repeat;width:100%;height:200px;
 					   background-size:cover;
 					   background-position: center;">
 		   
@@ -244,7 +244,7 @@ export default class AtlasTilesConnectWebPart extends BaseClientSideWebPart<IAtl
                   <div class="${styles.MainContainer}"
                   style="background-image: url(${escape(this.properties.ImageURL)});
                   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-                  background-repeat: no-repeat;width:100%;height:267px;
+                  background-repeat: no-repeat;width:100%;height:200px;
                   background-size:cover;
                   background-position: center;">
             
